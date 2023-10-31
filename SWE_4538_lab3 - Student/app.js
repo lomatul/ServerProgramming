@@ -39,8 +39,10 @@ app.use(cors({
 }));
 
 const routes = require("./routes/auth.routes");
-app.use(routes);
+const project = require("./routes/project.routes");
 
+app.use(routes);
+app.use(project);
 const ensureAuthenticated = require("./middlewares/auth.middleware");
 app.get("/welcome", ensureAuthenticated, (req, res) => {
   res.sendFile(__dirname + "/views/homePage.html");

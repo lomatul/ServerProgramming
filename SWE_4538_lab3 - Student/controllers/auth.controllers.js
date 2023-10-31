@@ -195,6 +195,8 @@ const photo = req.file.filename
   }
 };
 
+
+
 const postMultipleImages = async (req, res) => {
   try {
     if (!req.files) {
@@ -207,7 +209,7 @@ const postMultipleImages = async (req, res) => {
     const user = await User.findById(userId);
    
     if (photo) {
-      user.images = photo
+      user.images = user.images.concat(photo);
     }
     await user.save();
 
@@ -253,6 +255,45 @@ const audio = req.file.filename
   }
 };
 
+
+const postMultipleAudios = async (req, res) => {
+  try {
+    if (!req.files) {
+      return res.status(400).json({ message: 'No file provided' });
+    }
+
+    const photo = req.files.map((file) => file.filename);
+
+    const userId = req.user.id
+    const user = await User.findById(userId);
+   
+    if (photo) {
+      user.images = user.images.concat(photo);
+    }
+    await user.save();
+
+    res.json({ message: 'Multiple images updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+const getMultipleAudios = async (req, res) => {
+  try {
+    const userId = req.user.id
+    const user = await User.findById(userId);
+    const images= user.images
+
+    res.json({ images });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
 module.exports = {
   getLogin,
   getRegister,
@@ -264,6 +305,8 @@ module.exports = {
   postProfileImage,
   postMultipleImages,
   getMultipleImages,
-  postAudioFile
+  postAudioFile,
+  postMultipleAudios,
+  getMultipleAudios
 };
 

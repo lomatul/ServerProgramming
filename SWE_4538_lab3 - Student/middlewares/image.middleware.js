@@ -9,6 +9,18 @@ const fileFilter = (req, file, cb) => {
   } else cb(null, false);
 };
 
+const audioFileFilter = (req, file, cb) => {
+  const allowedTypes = ["audio/mpeg", "audio/wav", "audio/ogg"];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+
+
+
 const profileImage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads");
@@ -33,4 +45,6 @@ const uploadAudioFile = multer({
   preservePath: true,
   storage: audioStorage,
 });
+
+
 module.exports = { uploadProfileImage, uploadAudioFile };
